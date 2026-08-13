@@ -2,41 +2,61 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anotador de Puntos - Juegos de Mesa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Conteo de Cartas</title>
     
-    <!-- Enlaces para convertir en PWA -->
+    <!-- PWA -->
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#4f46e5">
     <link rel="apple-touch-icon" href="icon.png">
 
     <style>
         :root {
-            --bg-color: #f1f5f9;
-            --card-bg: #ffffff;
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --accent: #f59e0b;
+            --bg-color: #f8fafc;
+            --surface: #ffffff;
+            --surface-subtle: #f1f5f9;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #e0e7ff;
             --text-main: #0f172a;
             --text-muted: #64748b;
-            --border-color: #cbd5e1;
+            --border-color: #e2e8f0;
             --danger: #ef4444;
-            --danger-hover: #dc2626;
-            --success: #10b981;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --danger-bg: #fef2f2;
+            --danger-border: #fca5a5;
+            --accent: #f59e0b;
+            --accent-light: #fef3c7;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 14px -2px rgba(79, 70, 229, 0.08), 0 2px 6px -1px rgba(0,0,0,0.04);
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f172a;
+                --surface: #1e293b;
+                --surface-subtle: #334155;
+                --text-main: #f8fafc;
+                --text-muted: #94a3b8;
+                --border-color: #334155;
+                --primary-light: rgba(79, 70, 229, 0.2);
+            }
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding: 16px;
+            padding: clamp(10px, 2vw, 24px);
             display: flex;
             justify-content: center;
             min-height: 100vh;
@@ -44,61 +64,97 @@
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 1000px;
         }
 
         header {
             text-align: center;
-            margin-bottom: 20px;
-            background: white;
-            padding: 16px;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
+            margin-bottom: 16px;
+            background: var(--surface);
+            padding: clamp(12px, 2vw, 20px);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
             border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4f46e5, #06b6d4, #f59e0b);
+        }
+
+        .brand-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .brand-icon-svg {
+            width: clamp(30px, 4vw, 38px);
+            height: clamp(30px, 4vw, 38px);
+            flex-shrink: 0;
         }
 
         h1 {
-            font-size: 1.6rem;
+            font-size: clamp(1.25rem, 3vw, 1.65rem);
             font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        p.subtitle {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            font-weight: 500;
+        .game-dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .game-dashboard-layout {
+                grid-template-columns: 2fr 1fr;
+                align-items: start;
+            }
         }
 
         .card {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 20px;
+            background: var(--surface);
+            padding: clamp(14px, 2vw, 20px);
+            border-radius: var(--radius-lg);
+            margin-bottom: 14px;
             border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-md);
         }
 
         .card h2 {
-            font-size: 1.25rem;
-            margin-bottom: 16px;
+            font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+            font-weight: 700;
+            margin-bottom: 12px;
             color: var(--text-main);
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.72rem;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
         }
 
         .input-group {
@@ -110,40 +166,38 @@
         input[type="number"],
         select {
             width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 2px solid var(--border-color);
-            background: #f8fafc;
+            padding: 10px 12px;
+            border-radius: var(--radius-md);
+            border: 1.5px solid var(--border-color);
+            background: var(--surface-subtle);
             color: var(--text-main);
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
             outline: none;
-            transition: border-color 0.2s, background 0.2s;
         }
 
         input:focus, select:focus {
             border-color: var(--primary);
-            background: #ffffff;
+            background: var(--surface);
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
 
         button {
-            padding: 12px 18px;
-            border-radius: 10px;
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
             border: none;
-            font-size: 1rem;
+            font-size: 0.88rem;
             font-weight: 700;
             cursor: pointer;
             background: var(--primary);
             color: white;
-            transition: background 0.2s, transform 0.1s;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        button:active {
-            transform: scale(0.97);
+            gap: 6px;
+            box-shadow: 0 2px 5px rgba(79, 70, 229, 0.2);
+            white-space: nowrap;
+            transition: all 0.2s ease;
         }
 
         button:hover {
@@ -152,168 +206,159 @@
 
         button.danger {
             background: var(--danger);
-        }
-
-        button.danger:hover {
-            background: var(--danger-hover);
+            box-shadow: 0 2px 5px rgba(239, 68, 68, 0.2);
         }
 
         button.warning {
-            background: #d97706;
-        }
-
-        button.warning:hover {
-            background: #b45309;
+            background: var(--accent);
+            color: #0f172a;
+            box-shadow: 0 2px 5px rgba(245, 158, 11, 0.2);
         }
 
         button.full-width {
             width: 100%;
+            padding: 12px;
+            font-size: 0.95rem;
         }
 
         .players-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        @media (min-width: 520px) {
+            .players-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
         }
 
         .player-box {
-            background: var(--card-bg);
-            border-radius: 16px;
-            border: 2px solid var(--border-color);
-            padding: 16px;
-            box-shadow: var(--shadow);
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            border: 1.5px solid var(--border-color);
+            padding: 10px 12px;
+            box-shadow: var(--shadow-sm);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
             position: relative;
-            transition: transform 0.2s, border-color 0.2s;
         }
 
-        .player-box:hover {
-            border-color: var(--primary);
+        .player-box.leader {
+            border-color: var(--accent);
+            background: linear-gradient(180deg, var(--surface) 0%, var(--accent-light) 300%);
+        }
+
+        .leader-badge {
+            position: absolute;
+            top: -7px;
+            right: 10px;
+            background: var(--accent);
+            color: #0f172a;
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+
+        .player-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 0;
+            flex: 1;
         }
 
         .player-avatar {
-            width: 48px;
-            height: 48px;
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
             border-radius: 50%;
-            background: #dbeafe;
+            background: var(--primary-light);
             color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-            border: 2px solid #bfdbfe;
+            font-size: 0.92rem;
+            border: 1.5px solid var(--primary);
+        }
+
+        .player-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
         }
 
         .player-name {
-            font-size: 1.15rem;
+            font-size: 0.92rem;
             font-weight: 800;
             color: var(--text-main);
-            text-align: center;
-            margin-bottom: 4px;
-            word-break: break-word;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .player-score-badge {
-            background: #f1f5f9;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 1.5rem;
+            font-size: 1.15rem;
             font-weight: 900;
             color: var(--primary);
-            margin: 8px 0 14px 0;
-            border: 1px solid var(--border-color);
-            width: 100%;
-            text-align: center;
+            line-height: 1.1;
         }
 
         .player-box.eliminated {
-            background: #fef2f2;
-            border-color: #fca5a5;
+            background: var(--danger-bg);
+            border-color: var(--danger-border);
         }
 
         .player-box.eliminated .player-score-badge {
             color: var(--danger);
-            background: #ffe4e6;
-            border-color: #fca5a5;
             text-decoration: line-through;
         }
 
-        .player-box.eliminated .player-avatar {
-            background: #fee2e2;
-            color: var(--danger);
-            border-color: #fca5a5;
-        }
-
         .score-input-container {
-            width: 100%;
             display: flex;
             gap: 6px;
+            align-items: center;
         }
 
         .score-input-container input {
+            width: 65px;
             text-align: center;
-            font-size: 1.1rem;
-            padding: 8px;
-        }
-
-        .score-input-container button {
-            padding: 8px 12px;
-            font-size: 0.95rem;
-            white-space: nowrap;
-        }
-
-        .badge-elim {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: var(--danger);
-            color: white;
-            font-size: 0.65rem;
-            font-weight: 800;
-            padding: 2px 6px;
-            border-radius: 6px;
-            text-transform: uppercase;
+            font-size: 0.9rem;
+            padding: 7px 4px;
+            font-weight: 700;
         }
 
         .delete-player-btn {
-            position: absolute;
-            top: 10px;
-            left: 10px;
             background: transparent;
             color: var(--text-muted);
             border: none;
-            font-size: 1rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            padding: 0;
-            box-shadow: none;
-        }
-
-        .delete-player-btn:hover {
-            color: var(--danger);
-            background: transparent;
+            padding: 2px 4px;
         }
 
         ul.player-setup-list {
             list-style: none;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         ul.player-setup-list li {
-            background: #f8fafc;
-            padding: 10px 14px;
-            border-radius: 8px;
-            margin-bottom: 8px;
+            background: var(--surface-subtle);
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 1px solid var(--border-color);
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 0.88rem;
         }
 
         .hidden {
@@ -322,14 +367,30 @@
 
         .status-banner {
             text-align: center;
-            padding: 10px;
-            background: #eff6ff;
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 700;
+            padding: 10px 14px;
+            background: var(--primary-light);
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 800;
             color: var(--primary);
-            margin-bottom: 20px;
-            border: 1px solid #bfdbfe;
+            margin-bottom: 14px;
+            border: 1px solid var(--border-color);
+        }
+
+        .msg-box {
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .msg-box.error {
+            background: var(--danger-bg);
+            color: var(--danger);
+            border: 1px solid var(--danger-border);
+            display: block;
         }
 
         .action-buttons-group {
@@ -338,7 +399,7 @@
             margin-top: 10px;
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 480px) {
             .action-buttons-group {
                 flex-direction: column;
             }
@@ -349,31 +410,39 @@
 
 <div class="container">
     <header>
-        <h1>Anotador de Puntos</h1>
-        <p class="subtitle">Continental • Rummy • Decathlon</p>
+        <div class="brand-wrapper">
+            <svg class="brand-icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="14" width="32" height="44" rx="4" fill="#ffffff" stroke="#4f46e5" stroke-width="3" transform="rotate(-10 22 36)"/>
+                <path d="M 18 24 L 22 28 L 18 32 L 14 28 Z" fill="#ef4444" transform="rotate(-10 22 36)"/>
+                <rect x="26" y="10" width="32" height="44" rx="4" fill="#ffffff" stroke="#4f46e5" stroke-width="3" transform="rotate(8 42 32)"/>
+                <path d="M 42 22 C 40 18, 34 20, 36 25 C 38 30, 42 32, 42 32 C 42 32, 46 30, 48 25 C 50 20, 44 18, 42 22 Z" fill="#ef4444" transform="rotate(8 42 32)"/>
+            </svg>
+            <h1>Conteo de Cartas</h1>
+        </div>
     </header>
 
     <!-- PANTALLA 1: CONFIGURACIÓN -->
     <div id="setup-screen">
-        <div class="card">
-            <h2>Configuración de la Partida</h2>
+        <div class="card" style="max-width: 500px; margin: 0 auto;">
+            <h2>⚙️ Configuración de la Partida</h2>
             
             <div class="form-group">
                 <label for="limit-input">Límite de Puntos (Eliminación)</label>
-                <input type="number" id="limit-input" placeholder="Ej: 100, 500, 1000" value="100">
+                <input type="number" id="limit-input" placeholder="Ej: 100, 500" value="100">
             </div>
 
             <div class="form-group">
                 <label for="player-name-input">Añadir Jugadores Iniciales</label>
                 <div class="input-group">
-                    <input type="text" id="player-name-input" placeholder="Nombre del jugador" onkeypress="handleKeyPress(event, addInitialPlayer)">
-                    <button type="button" onclick="addInitialPlayer()">+ Añadir</button>
+                    <input type="text" id="player-name-input" placeholder="Nombre del jugador">
+                    <button type="button" id="btn-add-initial">+ Añadir</button>
                 </div>
+                <div id="setup-msg" class="msg-box"></div>
             </div>
 
             <ul id="initial-players-list" class="player-setup-list"></ul>
 
-            <button type="button" class="full-width" style="margin-top: 20px; font-size: 1.1rem;" onclick="startGame()">¡Iniciar Partida!</button>
+            <button type="button" id="btn-start-game" class="full-width" style="margin-top: 14px;">🚀 ¡Iniciar Partida!</button>
         </div>
     </div>
 
@@ -381,38 +450,39 @@
     <div id="game-screen" class="hidden">
         <div class="status-banner" id="limit-display"></div>
 
-        <div id="players-container" class="players-grid"></div>
+        <div class="game-dashboard-layout">
+            <div>
+                <div id="players-container" class="players-grid"></div>
+            </div>
 
-        <div class="card">
-            <h2>Opción 1: Reenganchar Jugador Eliminado</h2>
-            <div class="form-group">
-                <label for="select-eliminated-player">Selecciona Jugador Eliminado</label>
-                <div class="input-group">
-                    <select id="select-eliminated-player">
-                        <option value="">-- Seleccionar --</option>
-                    </select>
-                    <button type="button" onclick="reengageSelectedPlayer()">Reenganchar</button>
+            <div>
+                <div class="card">
+                    <h2>🔄 Reenganchar Eliminado</h2>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <select id="select-eliminated-player">
+                                <option value="">-- Seleccionar --</option>
+                            </select>
+                            <button type="button" id="btn-reengage">Entrar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>➕ Nuevo Jugador</h2>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" id="reeng-name" placeholder="Nombre">
+                            <button type="button" id="btn-add-new-midgame">Añadir</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons-group">
+                    <button type="button" id="btn-clean-eliminated" class="warning full-width">🧹 Limpiar</button>
+                    <button type="button" id="btn-reset" class="danger full-width">🔄 Reiniciar</button>
                 </div>
             </div>
-            <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">
-                ℹ️ Actualiza su puntuación a la <b>más alta de los jugadores que aún están en juego</b>.
-            </p>
-        </div>
-
-        <div class="card">
-            <h2>Opción 2: Nuevo Jugador en la Mesa</h2>
-            <div class="form-group">
-                <label for="reeng-name">Nombre del Nuevo Jugador</label>
-                <div class="input-group">
-                    <input type="text" id="reeng-name" placeholder="Nombre" onkeypress="handleKeyPress(event, addNewPlayer)">
-                    <button type="button" onclick="addNewPlayer()">Entrar al Juego</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="action-buttons-group">
-            <button type="button" class="warning full-width" style="padding: 12px;" onclick="cleanEliminatedPlayers()">🧹 Limpiar Jugadores Eliminados</button>
-            <button type="button" class="danger full-width" style="padding: 12px;" onclick="resetGame()">🔄 Reiniciar Partida</button>
         </div>
     </div>
 </div>
@@ -421,19 +491,43 @@
     let limit = 0;
     let players = [];
 
-    function handleKeyPress(event, actionFunction) {
-        if (event.key === 'Enter') {
-            actionFunction();
-        }
-    }
+    // Se asegura de vincular los eventos una vez cargado el documento HTML en local o remoto
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputName = document.getElementById('player-name-input');
+        const btnAddInitial = document.getElementById('btn-add-initial');
+        const btnStart = document.getElementById('btn-start-game');
+        const btnReset = document.getElementById('btn-reset');
+        const btnClean = document.getElementById('btn-clean-eliminated');
+        const btnReengage = document.getElementById('btn-reengage');
+        const btnAddNewMidgame = document.getElementById('btn-add-new-midgame');
+        const inputReengName = document.getElementById('reeng-name');
+
+        btnAddInitial.addEventListener('click', addInitialPlayer);
+        inputName.addEventListener('keydown', (e) => { if (e.key === 'Enter') addInitialPlayer(); });
+        
+        btnStart.addEventListener('click', startGame);
+        btnReset.addEventListener('click', resetGame);
+        btnClean.addEventListener('click', cleanEliminatedPlayers);
+        btnReengage.addEventListener('click', reengageSelectedPlayer);
+        btnAddNewMidgame.addEventListener('click', addNewPlayerMidgame);
+        inputReengName.addEventListener('keydown', (e) => { if (e.key === 'Enter') addNewPlayerMidgame(); });
+    });
 
     function addInitialPlayer() {
         const input = document.getElementById('player-name-input');
+        const msg = document.getElementById('setup-msg');
         const name = input.value.trim();
-        if (name) {
-            players.push({ name: name, score: 0, notified: false });
+        
+        if (name !== "") {
+            players.push({ name: name, score: 0 });
             input.value = '';
+            msg.className = 'msg-box';
+            msg.innerText = '';
             renderInitialList();
+            input.focus();
+        } else {
+            msg.innerText = 'Escribe un nombre válido';
+            msg.className = 'msg-box error';
         }
     }
 
@@ -447,22 +541,26 @@
         list.innerHTML = players.map((p, i) => `
             <li>
                 <span>👤 ${p.name}</span>
-                <button type="button" class="danger" style="padding: 4px 10px; font-size: 0.85rem;" onclick="removeInitialPlayer(${i})">✕</button>
+                <button type="button" class="danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="removeInitialPlayer(${i})">✕</button>
             </li>
         `).join('');
     }
 
     function startGame() {
+        const msg = document.getElementById('setup-msg');
         limit = parseInt(document.getElementById('limit-input').value) || 0;
+        
         if (players.length === 0) {
-            alert("Añade al menos un jugador para empezar.");
+            msg.innerText = 'Añade al menos un jugador antes de iniciar.';
+            msg.className = 'msg-box error';
             return;
         }
+        
         document.getElementById('setup-screen').classList.add('hidden');
         document.getElementById('game-screen').classList.remove('hidden');
         document.getElementById('limit-display').innerText = limit > 0 
-            ? `Límite de eliminación: ${limit} puntos` 
-            : "Partida sin límite fijo de puntos";
+            ? `🎯 Límite de eliminación: ${limit} pts` 
+            : "🎲 Sin límite de puntos";
         renderBoard();
     }
 
@@ -472,7 +570,6 @@
         if (!isNaN(points)) {
             players[index].score += points;
             input.value = '';
-            checkLimits();
             renderBoard();
         }
     }
@@ -491,83 +588,69 @@
     function reengageSelectedPlayer() {
         const select = document.getElementById('select-eliminated-player');
         const playerIndex = select.value;
-        if (playerIndex === "") {
-            alert("Por favor, selecciona un jugador eliminado.");
-            return;
-        }
+        if (playerIndex === "") return;
 
         const targetScore = getHighestActiveScore();
         players[playerIndex].score = targetScore;
-        players[playerIndex].notified = false;
-
         renderBoard();
     }
 
-    function addNewPlayer() {
+    function addNewPlayerMidgame() {
         const nameInput = document.getElementById('reeng-name');
         const name = nameInput.value.trim();
         if (!name) return;
 
         const targetScore = getHighestActiveScore();
-        players.push({ name: name, score: targetScore, notified: false });
+        players.push({ name: name, score: targetScore });
         nameInput.value = '';
         renderBoard();
     }
 
     function deletePlayer(index) {
-        if (confirm(`¿Eliminar a ${players[index].name} de la mesa?`)) {
-            players.splice(index, 1);
-            renderBoard();
-        }
+        players.splice(index, 1);
+        renderBoard();
     }
 
     function cleanEliminatedPlayers() {
         if (limit <= 0) return;
-        const eliminatedCount = players.filter(p => p.score >= limit).length;
-        if (eliminatedCount === 0) {
-            alert("No hay ningún jugador eliminado en este momento.");
-            return;
-        }
-
-        if (confirm(`¿Eliminar a los ${eliminatedCount} jugadores que han superado el límite de puntos?`)) {
-            players = players.filter(p => p.score < limit);
-            renderBoard();
-        }
-    }
-
-    function checkLimits() {
-        if (limit <= 0) return;
-        players.forEach(p => {
-            if (p.score >= limit && !p.notified) {
-                alert(`¡ALERTA! ${p.name} ha alcanzado o superado el límite con ${p.score} puntos y queda ELIMINADO.`);
-                p.notified = true;
-            }
-        });
+        players = players.filter(p => p.score < limit);
+        renderBoard();
     }
 
     function renderBoard() {
         const container = document.getElementById('players-container');
         const selectEliminated = document.getElementById('select-eliminated-player');
 
+        const activePlayers = players.filter(p => limit <= 0 || p.score < limit);
+        const minActiveScore = activePlayers.length > 0 ? Math.min(...activePlayers.map(p => p.score)) : null;
+
         container.innerHTML = players.map((p, i) => {
             const isEliminated = limit > 0 && p.score >= limit;
+            const isLeader = !isEliminated && minActiveScore !== null && p.score === minActiveScore && activePlayers.length > 1;
             const initialLetter = p.name.charAt(0).toUpperCase();
+
             return `
-                <div class="player-box ${isEliminated ? 'eliminated' : ''}">
-                    <button class="delete-player-btn" title="Eliminar" onclick="deletePlayer(${i})">✕</button>
-                    ${isEliminated ? '<span class="badge-elim">Eliminado</span>' : ''}
-                    <div class="player-avatar">${initialLetter}</div>
-                    <div class="player-name">${p.name}</div>
-                    <div class="player-score-badge">${p.score} <span style="font-size:0.9rem; font-weight:600;">pts</span></div>
+                <div class="player-box ${isEliminated ? 'eliminated' : ''} ${isLeader ? 'leader' : ''}">
+                    ${isLeader ? '<span class="leader-badge">👑 Líder</span>' : ''}
+                    
+                    <div class="player-left">
+                        <button class="delete-player-btn" title="Quitar" onclick="deletePlayer(${i})">✕</button>
+                        <div class="player-avatar">${initialLetter}</div>
+                        <div class="player-info">
+                            <div class="player-name">${p.name}</div>
+                            <div class="player-score-badge">${p.score} <span style="font-size:0.7rem; font-weight:700;">pts</span></div>
+                        </div>
+                    </div>
+
                     <div class="score-input-container">
-                        <input type="number" id="add-input-${i}" placeholder="+/-" onkeypress="handleKeyPress(event, () => addPoints(${i}))">
+                        <input type="number" id="add-input-${i}" placeholder="+/-" onkeydown="if(event.key==='Enter') addPoints(${i})">
                         <button type="button" onclick="addPoints(${i})">+ Sumar</button>
                     </div>
                 </div>
             `;
         }).join('');
 
-        selectEliminated.innerHTML = '<option value="">-- Seleccionar Jugador --</option>';
+        selectEliminated.innerHTML = '<option value="">-- Seleccionar --</option>';
         players.forEach((p, i) => {
             if (limit > 0 && p.score >= limit) {
                 const opt = document.createElement('option');
@@ -579,12 +662,13 @@
     }
 
     function resetGame() {
-        if (confirm("¿Seguro que deseas reiniciar la partida? Se borrarán todos los puntos y jugadores.")) {
-            players = [];
-            document.getElementById('initial-players-list').innerHTML = '';
-            document.getElementById('game-screen').classList.add('hidden');
-            document.getElementById('setup-screen').classList.remove('hidden');
-        }
+        players = [];
+        document.getElementById('initial-players-list').innerHTML = '';
+        document.getElementById('game-screen').classList.add('hidden');
+        document.getElementById('setup-screen').classList.remove('hidden');
+        document.getElementById('player-name-input').value = '';
+        document.getElementById('setup-msg').className = 'msg-box';
+        document.getElementById('setup-msg').innerText = '';
     }
 </script>
 </body>
