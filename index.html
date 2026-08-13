@@ -89,6 +89,24 @@
             background: linear-gradient(90deg, #4f46e5, #06b6d4, #f59e0b);
         }
 
+        .header-top {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 6px;
+        }
+
+        .lang-select {
+            padding: 4px 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--surface-subtle);
+            color: var(--text-main);
+            cursor: pointer;
+            width: auto;
+        }
+
         .brand-wrapper {
             display: flex;
             align-items: center;
@@ -410,6 +428,13 @@
 
 <div class="container">
     <header>
+        <div class="header-top">
+            <select id="lang-switch" class="lang-select">
+                <option value="es">🇪🇸 Español</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="fr">🇫🇷 Français</option>
+            </select>
+        </div>
         <div class="brand-wrapper">
             <svg class="brand-icon-svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="6" y="14" width="32" height="44" rx="4" fill="#ffffff" stroke="#4f46e5" stroke-width="3" transform="rotate(-10 22 36)"/>
@@ -417,22 +442,22 @@
                 <rect x="26" y="10" width="32" height="44" rx="4" fill="#ffffff" stroke="#4f46e5" stroke-width="3" transform="rotate(8 42 32)"/>
                 <path d="M 42 22 C 40 18, 34 20, 36 25 C 38 30, 42 32, 42 32 C 42 32, 46 30, 48 25 C 50 20, 44 18, 42 22 Z" fill="#ef4444" transform="rotate(8 42 32)"/>
             </svg>
-            <h1>Conteo de Cartas</h1>
+            <h1 id="app-title">Conteo de Cartas</h1>
         </div>
     </header>
 
     <!-- PANTALLA 1: CONFIGURACIÓN -->
     <div id="setup-screen">
         <div class="card" style="max-width: 500px; margin: 0 auto;">
-            <h2>⚙️ Configuración de la Partida</h2>
+            <h2 id="setup-title">⚙️ Configuración de la Partida</h2>
             
             <div class="form-group">
-                <label for="limit-input">Límite de Puntos (Eliminación)</label>
+                <label for="limit-input" id="lbl-limit">Límite de Puntos (Eliminación)</label>
                 <input type="number" id="limit-input" placeholder="Ej: 100, 500" value="100">
             </div>
 
             <div class="form-group">
-                <label for="player-name-input">Añadir Jugadores Iniciales</label>
+                <label for="player-name-input" id="lbl-add-players">Añadir Jugadores Iniciales</label>
                 <div class="input-group">
                     <input type="text" id="player-name-input" placeholder="Nombre del jugador">
                     <button type="button" id="btn-add-initial">+ Añadir</button>
@@ -457,19 +482,22 @@
 
             <div>
                 <div class="card">
-                    <h2>🔄 Reenganchar Eliminado</h2>
+                    <h2 id="title-reengage">🔄 Reenganchar Eliminado</h2>
                     <div class="form-group">
                         <div class="input-group">
                             <select id="select-eliminated-player">
-                                <option value="">-- Seleccionar --</option>
+                                <option value="" id="opt-select-default">-- Seleccionar --</option>
                             </select>
                             <button type="button" id="btn-reengage">Entrar</button>
                         </div>
                     </div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;" id="txt-reengage-info">
+                        ℹ️ Hereda la puntuación máxima activa.
+                    </p>
                 </div>
 
                 <div class="card">
-                    <h2>➕ Nuevo Jugador</h2>
+                    <h2 id="title-new-player">➕ Nuevo Jugador</h2>
                     <div class="form-group">
                         <div class="input-group">
                             <input type="text" id="reeng-name" placeholder="Nombre">
@@ -488,30 +516,140 @@
 </div>
 
 <script>
+    // DICCIONARIO DE TRADUCCIONES
+    const i18n = {
+        es: {
+            appTitle: "Conteo de Cartas",
+            setupTitle: "⚙️ Configuración de la Partida",
+            lblLimit: "Límite de Puntos (Eliminación)",
+            limitPlaceholder: "Ej: 100, 500",
+            lblAddPlayers: "Añadir Jugadores Iniciales",
+            inputNamePlaceholder: "Nombre del jugador",
+            btnAdd: "+ Añadir",
+            btnStart: "🚀 ¡Iniciar Partida!",
+            errInvalidName: "Escribe un nombre válido",
+            errNoPlayers: "Añade al menos un jugador antes de iniciar.",
+            titleReengage: "🔄 Reenganchar Eliminado",
+            optSelectDefault: "-- Seleccionar --",
+            btnEnter: "Entrar",
+            txtReengageInfo: "ℹ️ Hereda la puntuación máxima activa.",
+            titleNewPlayer: "➕ Nuevo Jugador",
+            btnClean: "🧹 Limpiar",
+            btnReset: "🔄 Reiniciar",
+            limitBanner: "🎯 Límite de eliminación: {limit} pts",
+            noLimitBanner: "🎲 Sin límite de puntos",
+            leaderBadge: "👑 Líder",
+            pts: "pts",
+            btnSum: "+ Sumar"
+        },
+        en: {
+            appTitle: "Card Scorekeeper",
+            setupTitle: "⚙️ Game Setup",
+            lblLimit: "Point Limit (Elimination)",
+            limitPlaceholder: "E.g., 100, 500",
+            lblAddPlayers: "Add Initial Players",
+            inputNamePlaceholder: "Player name",
+            btnAdd: "+ Add",
+            btnStart: "🚀 Start Game!",
+            errInvalidName: "Enter a valid name",
+            errNoPlayers: "Add at least one player before starting.",
+            titleReengage: "🔄 Re-enter Eliminated Player",
+            optSelectDefault: "-- Select --",
+            btnEnter: "Re-enter",
+            txtReengageInfo: "ℹ️ Inherits the highest active score.",
+            titleNewPlayer: "➕ New Player",
+            btnClean: "🧹 Clear",
+            btnReset: "🔄 Reset",
+            limitBanner: "🎯 Elimination limit: {limit} pts",
+            noLimitBanner: "🎲 No point limit",
+            leaderBadge: "👑 Leader",
+            pts: "pts",
+            btnSum: "+ Add"
+        },
+        fr: {
+            appTitle: "Compteur de Cartes",
+            setupTitle: "⚙️ Configuration de la Partie",
+            lblLimit: "Limite de Points (Élimination)",
+            limitPlaceholder: "Ex : 100, 500",
+            lblAddPlayers: "Ajouter les Joueurs Initiaux",
+            inputNamePlaceholder: "Nom du joueur",
+            btnAdd: "+ Ajouter",
+            btnStart: "🚀 Démarrer la Partie !",
+            errInvalidName: "Entrez un nom valide",
+            errNoPlayers: "Ajoutez au moins un joueur avant de commencer.",
+            titleReengage: "🔄 Réintégrer un Éliminé",
+            optSelectDefault: "-- Sélectionner --",
+            btnEnter: "Entrer",
+            txtReengageInfo: "ℹ️ Hérite du score actif le plus élevé.",
+            titleNewPlayer: "➕ Nouveau Joueur",
+            btnClean: "🧹 Nettoyer",
+            btnReset: "🔄 Réinitialiser",
+            limitBanner: "🎯 Limite d'élimination : {limit} pts",
+            noLimitBanner: "🎲 Sans limite de points",
+            leaderBadge: "👑 Leader",
+            pts: "pts",
+            btnSum: "+ Ajouter"
+        }
+    };
+
+    let currentLang = 'es';
     let limit = 0;
     let players = [];
 
-    // Se asegura de vincular los eventos una vez cargado el documento HTML en local o remoto
     document.addEventListener('DOMContentLoaded', () => {
-        const inputName = document.getElementById('player-name-input');
-        const btnAddInitial = document.getElementById('btn-add-initial');
-        const btnStart = document.getElementById('btn-start-game');
-        const btnReset = document.getElementById('btn-reset');
-        const btnClean = document.getElementById('btn-clean-eliminated');
-        const btnReengage = document.getElementById('btn-reengage');
-        const btnAddNewMidgame = document.getElementById('btn-add-new-midgame');
-        const inputReengName = document.getElementById('reeng-name');
-
-        btnAddInitial.addEventListener('click', addInitialPlayer);
-        inputName.addEventListener('keydown', (e) => { if (e.key === 'Enter') addInitialPlayer(); });
+        // Detectar o cargar idioma guardado
+        const savedLang = localStorage.getItem('app_lang');
+        const browserLang = navigator.language ? navigator.language.split('-')[0] : 'es';
+        currentLang = savedLang || (i18n[browserLang] ? browserLang : 'es');
         
-        btnStart.addEventListener('click', startGame);
-        btnReset.addEventListener('click', resetGame);
-        btnClean.addEventListener('click', cleanEliminatedPlayers);
-        btnReengage.addEventListener('click', reengageSelectedPlayer);
-        btnAddNewMidgame.addEventListener('click', addNewPlayerMidgame);
-        inputReengName.addEventListener('keydown', (e) => { if (e.key === 'Enter') addNewPlayerMidgame(); });
+        const langSwitch = document.getElementById('lang-switch');
+        langSwitch.value = currentLang;
+        langSwitch.addEventListener('change', (e) => {
+            currentLang = e.target.value;
+            localStorage.setItem('app_lang', currentLang);
+            applyLanguage();
+            renderBoard();
+        });
+
+        applyLanguage();
+
+        // Eventos de botones e inputs
+        document.getElementById('btn-add-initial').addEventListener('click', addInitialPlayer);
+        document.getElementById('player-name-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') addInitialPlayer(); });
+        document.getElementById('btn-start-game').addEventListener('click', startGame);
+        document.getElementById('btn-reset').addEventListener('click', resetGame);
+        document.getElementById('btn-clean-eliminated').addEventListener('click', cleanEliminatedPlayers);
+        document.getElementById('btn-reengage').addEventListener('click', reengageSelectedPlayer);
+        document.getElementById('btn-add-new-midgame').addEventListener('click', addNewPlayerMidgame);
+        document.getElementById('reeng-name').addEventListener('keydown', (e) => { if (e.key === 'Enter') addNewPlayerMidgame(); });
     });
+
+    function applyLanguage() {
+        const t = i18n[currentLang];
+        document.getElementById('app-title').innerText = t.appTitle;
+        document.getElementById('setup-title').innerText = t.setupTitle;
+        document.getElementById('lbl-limit').innerText = t.lblLimit;
+        document.getElementById('limit-input').placeholder = t.limitPlaceholder;
+        document.getElementById('lbl-add-players').innerText = t.lblAddPlayers;
+        document.getElementById('player-name-input').placeholder = t.inputNamePlaceholder;
+        document.getElementById('btn-add-initial').innerText = t.btnAdd;
+        document.getElementById('btn-start-game').innerText = t.btnStart;
+        document.getElementById('title-reengage').innerText = t.titleReengage;
+        document.getElementById('opt-select-default').innerText = t.optSelectDefault;
+        document.getElementById('btn-reengage').innerText = t.btnEnter;
+        document.getElementById('txt-reengage-info').innerText = t.txtReengageInfo;
+        document.getElementById('title-new-player').innerText = t.titleNewPlayer;
+        document.getElementById('reeng-name').placeholder = t.inputNamePlaceholder;
+        document.getElementById('btn-add-new-midgame').innerText = t.btnAdd;
+        document.getElementById('btn-clean-eliminated').innerText = t.btnClean;
+        document.getElementById('btn-reset').innerText = t.btnReset;
+
+        if (document.getElementById('game-screen').classList.contains('hidden') === false) {
+            document.getElementById('limit-display').innerText = limit > 0 
+                ? t.limitBanner.replace('{limit}', limit) 
+                : t.noLimitBanner;
+        }
+    }
 
     function addInitialPlayer() {
         const input = document.getElementById('player-name-input');
@@ -526,7 +664,7 @@
             renderInitialList();
             input.focus();
         } else {
-            msg.innerText = 'Escribe un nombre válido';
+            msg.innerText = i18n[currentLang].errInvalidName;
             msg.className = 'msg-box error';
         }
     }
@@ -551,16 +689,17 @@
         limit = parseInt(document.getElementById('limit-input').value) || 0;
         
         if (players.length === 0) {
-            msg.innerText = 'Añade al menos un jugador antes de iniciar.';
+            msg.innerText = i18n[currentLang].errNoPlayers;
             msg.className = 'msg-box error';
             return;
         }
         
         document.getElementById('setup-screen').classList.add('hidden');
         document.getElementById('game-screen').classList.remove('hidden');
+        const t = i18n[currentLang];
         document.getElementById('limit-display').innerText = limit > 0 
-            ? `🎯 Límite de eliminación: ${limit} pts` 
-            : "🎲 Sin límite de puntos";
+            ? t.limitBanner.replace('{limit}', limit) 
+            : t.noLimitBanner;
         renderBoard();
     }
 
@@ -620,6 +759,7 @@
     function renderBoard() {
         const container = document.getElementById('players-container');
         const selectEliminated = document.getElementById('select-eliminated-player');
+        const t = i18n[currentLang];
 
         const activePlayers = players.filter(p => limit <= 0 || p.score < limit);
         const minActiveScore = activePlayers.length > 0 ? Math.min(...activePlayers.map(p => p.score)) : null;
@@ -631,31 +771,31 @@
 
             return `
                 <div class="player-box ${isEliminated ? 'eliminated' : ''} ${isLeader ? 'leader' : ''}">
-                    ${isLeader ? '<span class="leader-badge">👑 Líder</span>' : ''}
+                    ${isLeader ? `<span class="leader-badge">${t.leaderBadge}</span>` : ''}
                     
                     <div class="player-left">
-                        <button class="delete-player-btn" title="Quitar" onclick="deletePlayer(${i})">✕</button>
+                        <button class="delete-player-btn" title="✕" onclick="deletePlayer(${i})">✕</button>
                         <div class="player-avatar">${initialLetter}</div>
                         <div class="player-info">
                             <div class="player-name">${p.name}</div>
-                            <div class="player-score-badge">${p.score} <span style="font-size:0.7rem; font-weight:700;">pts</span></div>
+                            <div class="player-score-badge">${p.score} <span style="font-size:0.7rem; font-weight:700;">${t.pts}</span></div>
                         </div>
                     </div>
 
                     <div class="score-input-container">
                         <input type="number" id="add-input-${i}" placeholder="+/-" onkeydown="if(event.key==='Enter') addPoints(${i})">
-                        <button type="button" onclick="addPoints(${i})">+ Sumar</button>
+                        <button type="button" onclick="addPoints(${i})">${t.btnSum}</button>
                     </div>
                 </div>
             `;
         }).join('');
 
-        selectEliminated.innerHTML = '<option value="">-- Seleccionar --</option>';
+        selectEliminated.innerHTML = `<option value="">${t.optSelectDefault}</option>`;
         players.forEach((p, i) => {
             if (limit > 0 && p.score >= limit) {
                 const opt = document.createElement('option');
                 opt.value = i;
-                opt.textContent = `${p.name} (${p.score} pts)`;
+                opt.textContent = `${p.name} (${p.score} ${t.pts})`;
                 selectEliminated.appendChild(opt);
             }
         });
