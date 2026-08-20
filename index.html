@@ -26,6 +26,8 @@
             --danger-border: #fca5a5;
             --accent: #f59e0b;
             --accent-light: #fef3c7;
+            --info: #0284c7;
+            --info-light: #e0f2fe;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
             --shadow-md: 0 4px 14px -2px rgba(79, 70, 229, 0.08), 0 2px 6px -1px rgba(0,0,0,0.04);
             --radius-lg: 16px;
@@ -42,6 +44,7 @@
                 --text-muted: #94a3b8;
                 --border-color: #334155;
                 --primary-light: rgba(79, 70, 229, 0.2);
+                --info-light: rgba(2, 132, 199, 0.2);
             }
         }
 
@@ -56,7 +59,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding: clamp(10px, 2vw, 24px);
+            padding: clamp(8px, 2vw, 20px);
             display: flex;
             justify-content: center;
             min-height: 100vh;
@@ -64,14 +67,14 @@
 
         .container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 900px;
         }
 
         header {
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             background: var(--surface);
-            padding: clamp(12px, 2vw, 20px);
+            padding: clamp(10px, 2vw, 16px);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-md);
             border: 1px solid var(--border-color);
@@ -92,12 +95,12 @@
         .header-top {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .lang-select {
             padding: 4px 8px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 700;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border-color);
@@ -111,17 +114,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .brand-icon-svg {
-            width: clamp(30px, 4vw, 38px);
-            height: clamp(30px, 4vw, 38px);
+            width: 28px;
+            height: 28px;
             flex-shrink: 0;
         }
 
         h1 {
-            font-size: clamp(1.25rem, 3vw, 1.65rem);
+            font-size: clamp(1.15rem, 2.5vw, 1.45rem);
             font-weight: 800;
             letter-spacing: -0.3px;
             background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
@@ -132,29 +135,29 @@
         .game-dashboard-layout {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 16px;
+            gap: 14px;
         }
 
         @media (min-width: 768px) {
             .game-dashboard-layout {
-                grid-template-columns: 2fr 1fr;
+                grid-template-columns: 1.8fr 1.2fr;
                 align-items: start;
             }
         }
 
         .card {
             background: var(--surface);
-            padding: clamp(14px, 2vw, 20px);
+            padding: clamp(12px, 2vw, 18px);
             border-radius: var(--radius-lg);
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-md);
         }
 
         .card h2 {
-            font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+            font-size: 0.95rem;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: var(--text-main);
             display: flex;
             align-items: center;
@@ -162,7 +165,13 @@
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
+        }
+
+        .grid-2-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
 
         label {
@@ -172,7 +181,7 @@
             margin-bottom: 4px;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.3px;
         }
 
         .input-group {
@@ -184,7 +193,7 @@
         input[type="number"],
         select {
             width: 100%;
-            padding: 10px 12px;
+            padding: 9px 11px;
             border-radius: var(--radius-md);
             border: 1.5px solid var(--border-color);
             background: var(--surface-subtle);
@@ -201,10 +210,10 @@
         }
 
         button {
-            padding: 10px 14px;
+            padding: 9px 13px;
             border-radius: var(--radius-md);
             border: none;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 700;
             cursor: pointer;
             background: var(--primary);
@@ -212,7 +221,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 5px;
             box-shadow: 0 2px 5px rgba(79, 70, 229, 0.2);
             white-space: nowrap;
             transition: all 0.2s ease;
@@ -235,55 +244,75 @@
 
         button.full-width {
             width: 100%;
-            padding: 12px;
-            font-size: 0.95rem;
+            padding: 11px;
+            font-size: 0.92rem;
         }
 
         .players-grid {
-            display: grid;
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 10px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
-        @media (min-width: 520px) {
-            .players-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-        }
-
-        .player-box {
+        .player-card {
             background: var(--surface);
             border-radius: var(--radius-md);
             border: 1.5px solid var(--border-color);
             padding: 10px 12px;
             box-shadow: var(--shadow-sm);
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
             gap: 8px;
             position: relative;
         }
 
-        .player-box.leader {
+        .player-card.leader {
             border-color: var(--accent);
             background: linear-gradient(180deg, var(--surface) 0%, var(--accent-light) 300%);
         }
 
-        .leader-badge {
+        .player-card.eliminated {
+            background: var(--danger-bg);
+            border-color: var(--danger-border);
+        }
+
+        .badge-container {
+            display: flex;
+            gap: 4px;
             position: absolute;
-            top: -7px;
+            top: -8px;
             right: 10px;
+        }
+
+        .leader-badge {
             background: var(--accent);
             color: #0f172a;
-            font-size: 0.6rem;
+            font-size: 0.62rem;
             font-weight: 800;
             padding: 2px 6px;
-            border-radius: 10px;
+            border-radius: 8px;
             text-transform: uppercase;
         }
 
-        .player-left {
+        .elim-badge {
+            background: var(--danger);
+            color: white;
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 8px;
+            text-transform: uppercase;
+        }
+
+        .player-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .player-identity {
             display: flex;
             align-items: center;
             gap: 8px;
@@ -292,9 +321,9 @@
         }
 
         .player-avatar {
-            width: 34px;
-            height: 34px;
-            min-width: 34px;
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
             border-radius: 50%;
             background: var(--primary-light);
             color: var(--primary);
@@ -302,11 +331,17 @@
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 0.92rem;
+            font-size: 0.88rem;
             border: 1.5px solid var(--primary);
         }
 
-        .player-info {
+        .player-card.eliminated .player-avatar {
+            background: #fee2e2;
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .player-name-wrapper {
             display: flex;
             flex-direction: column;
             min-width: 0;
@@ -321,62 +356,91 @@
             text-overflow: ellipsis;
         }
 
+        .reentry-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--info);
+            background: var(--info-light);
+            padding: 1px 5px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            margin-top: 1px;
+        }
+
         .player-score-badge {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             font-weight: 900;
             color: var(--primary);
-            line-height: 1.1;
+            line-height: 1;
+            white-space: nowrap;
         }
 
-        .player-box.eliminated {
-            background: var(--danger-bg);
-            border-color: var(--danger-border);
-        }
-
-        .player-box.eliminated .player-score-badge {
+        .player-card.eliminated .player-score-badge {
             color: var(--danger);
             text-decoration: line-through;
         }
 
-        .score-input-container {
+        .player-actions-row {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             align-items: center;
         }
 
-        .score-input-container input {
-            width: 65px;
-            text-align: center;
-            font-size: 0.9rem;
-            padding: 7px 4px;
+        .score-input-large {
+            flex: 1;
+            padding: 8px 10px;
+            font-size: 0.95rem;
             font-weight: 700;
+            text-align: center;
+            border-radius: var(--radius-md);
+            border: 1.5px solid var(--border-color);
+            background: var(--surface-subtle);
+            color: var(--text-main);
+        }
+
+        .score-input-large:focus {
+            background: var(--surface);
+            border-color: var(--primary);
+        }
+
+        .btn-add-pts {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 0.88rem;
         }
 
         .delete-player-btn {
             background: transparent;
             color: var(--text-muted);
             border: none;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             cursor: pointer;
-            padding: 2px 4px;
+            padding: 4px 6px;
+            box-shadow: none;
+        }
+
+        .delete-player-btn:hover {
+            color: var(--danger);
         }
 
         ul.player-setup-list {
             list-style: none;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         ul.player-setup-list li {
             background: var(--surface-subtle);
-            padding: 8px 12px;
+            padding: 7px 10px;
             border-radius: var(--radius-md);
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 1px solid var(--border-color);
             font-weight: 700;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
         }
 
         .hidden {
@@ -385,22 +449,22 @@
 
         .status-banner {
             text-align: center;
-            padding: 10px 14px;
+            padding: 9px 12px;
             background: var(--primary-light);
             border-radius: var(--radius-md);
-            font-size: 0.88rem;
+            font-size: 0.82rem;
             font-weight: 800;
             color: var(--primary);
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             border: 1px solid var(--border-color);
         }
 
         .msg-box {
-            padding: 8px 12px;
+            padding: 7px 10px;
             border-radius: var(--radius-sm);
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 700;
-            margin-top: 8px;
+            margin-top: 6px;
             display: none;
         }
 
@@ -413,7 +477,7 @@
 
         .action-buttons-group {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-top: 10px;
         }
 
@@ -451,13 +515,19 @@
         <div class="card" style="max-width: 500px; margin: 0 auto;">
             <h2 id="setup-title">⚙️ Configuración de la Partida</h2>
             
-            <div class="form-group">
-                <label for="limit-input" id="lbl-limit">Límite de Puntos (Eliminación)</label>
-                <input type="number" id="limit-input" placeholder="Ej: 100, 500" value="100">
+            <div class="grid-2-col">
+                <div class="form-group">
+                    <label for="limit-input" id="lbl-limit">Límite de Puntos</label>
+                    <input type="number" id="limit-input" placeholder="Ej: 100" value="100">
+                </div>
+                <div class="form-group">
+                    <label for="max-reentries-input" id="lbl-max-reentries">Máx. Reenganches</label>
+                    <input type="number" id="max-reentries-input" placeholder="0 = Ilimitado" value="0" min="0">
+                </div>
             </div>
 
             <div class="form-group">
-                <label for="player-name-input" id="lbl-add-players">Añadir Jugadores Iniciales</label>
+                <label for="player-name-input" id="lbl-add-players">Añadir Jugadores</label>
                 <div class="input-group">
                     <input type="text" id="player-name-input" placeholder="Nombre del jugador">
                     <button type="button" id="btn-add-initial">+ Añadir</button>
@@ -467,7 +537,7 @@
 
             <ul id="initial-players-list" class="player-setup-list"></ul>
 
-            <button type="button" id="btn-start-game" class="full-width" style="margin-top: 14px;">🚀 ¡Iniciar Partida!</button>
+            <button type="button" id="btn-start-game" class="full-width" style="margin-top: 12px;">🚀 ¡Iniciar Partida!</button>
         </div>
     </div>
 
@@ -516,14 +586,14 @@
 </div>
 
 <script>
-    // DICCIONARIO DE TRADUCCIONES
     const i18n = {
         es: {
             appTitle: "Conteo de Cartas",
             setupTitle: "⚙️ Configuración de la Partida",
-            lblLimit: "Límite de Puntos (Eliminación)",
-            limitPlaceholder: "Ej: 100, 500",
-            lblAddPlayers: "Añadir Jugadores Iniciales",
+            lblLimit: "Límite de Puntos",
+            lblMaxReentries: "Máx. Reenganches",
+            unlimitedHelper: "0 = Ilimitados",
+            lblAddPlayers: "Añadir Jugadores",
             inputNamePlaceholder: "Nombre del jugador",
             btnAdd: "+ Añadir",
             btnStart: "🚀 ¡Iniciar Partida!",
@@ -536,42 +606,52 @@
             titleNewPlayer: "➕ Nuevo Jugador",
             btnClean: "🧹 Limpiar",
             btnReset: "🔄 Reiniciar",
-            limitBanner: "🎯 Límite de eliminación: {limit} pts",
-            noLimitBanner: "🎲 Sin límite de puntos",
+            limitBanner: "🎯 Límite: {limit} pts | 🔄 Reenganches máx: {reentries}",
+            noLimitBanner: "🎲 Sin límite | 🔄 Reenganches máx: {reentries}",
+            unlimited: "Ilimitados",
             leaderBadge: "👑 Líder",
+            elimBadge: "Eliminado",
             pts: "pts",
-            btnSum: "+ Sumar"
+            btnSum: "+ Sumar",
+            reentryCount: "🔄 {count} reenganche(s)",
+            reentryExceeded: "❌ Sin reenganches disponibles"
         },
         en: {
             appTitle: "Card Scorekeeper",
             setupTitle: "⚙️ Game Setup",
-            lblLimit: "Point Limit (Elimination)",
-            limitPlaceholder: "E.g., 100, 500",
-            lblAddPlayers: "Add Initial Players",
+            lblLimit: "Point Limit",
+            lblMaxReentries: "Max Re-entries",
+            unlimitedHelper: "0 = Unlimited",
+            lblAddPlayers: "Add Players",
             inputNamePlaceholder: "Player name",
             btnAdd: "+ Add",
             btnStart: "🚀 Start Game!",
             errInvalidName: "Enter a valid name",
             errNoPlayers: "Add at least one player before starting.",
-            titleReengage: "🔄 Re-enter Eliminated Player",
+            titleReengage: "🔄 Re-enter Eliminated",
             optSelectDefault: "-- Select --",
             btnEnter: "Re-enter",
             txtReengageInfo: "ℹ️ Inherits the highest active score.",
             titleNewPlayer: "➕ New Player",
             btnClean: "🧹 Clear",
             btnReset: "🔄 Reset",
-            limitBanner: "🎯 Elimination limit: {limit} pts",
-            noLimitBanner: "🎲 No point limit",
+            limitBanner: "🎯 Limit: {limit} pts | 🔄 Max Re-entries: {reentries}",
+            noLimitBanner: "🎲 No limit | 🔄 Max Re-entries: {reentries}",
+            unlimited: "Unlimited",
             leaderBadge: "👑 Leader",
+            elimBadge: "Eliminated",
             pts: "pts",
-            btnSum: "+ Add"
+            btnSum: "+ Add",
+            reentryCount: "🔄 {count} re-entry(s)",
+            reentryExceeded: "❌ No re-entries left"
         },
         fr: {
             appTitle: "Compteur de Cartes",
             setupTitle: "⚙️ Configuration de la Partie",
-            lblLimit: "Limite de Points (Élimination)",
-            limitPlaceholder: "Ex : 100, 500",
-            lblAddPlayers: "Ajouter les Joueurs Initiaux",
+            lblLimit: "Limite de Points",
+            lblMaxReentries: "Max Réintégrations",
+            unlimitedHelper: "0 = Illimitées",
+            lblAddPlayers: "Ajouter des Joueurs",
             inputNamePlaceholder: "Nom du joueur",
             btnAdd: "+ Ajouter",
             btnStart: "🚀 Démarrer la Partie !",
@@ -584,20 +664,24 @@
             titleNewPlayer: "➕ Nouveau Joueur",
             btnClean: "🧹 Nettoyer",
             btnReset: "🔄 Réinitialiser",
-            limitBanner: "🎯 Limite d'élimination : {limit} pts",
-            noLimitBanner: "🎲 Sans limite de points",
+            limitBanner: "🎯 Limite : {limit} pts | 🔄 Réintégrations max : {reentries}",
+            noLimitBanner: "🎲 Sans limite | 🔄 Réintégrations max : {reentries}",
+            unlimited: "Illimitées",
             leaderBadge: "👑 Leader",
+            elimBadge: "Éliminé",
             pts: "pts",
-            btnSum: "+ Ajouter"
+            btnSum: "+ Ajouter",
+            reentryCount: "🔄 {count} réintégration(s)",
+            reentryExceeded: "❌ Plus de réintégrations"
         }
     };
 
     let currentLang = 'es';
     let limit = 0;
+    let maxReentries = 0;
     let players = [];
 
     document.addEventListener('DOMContentLoaded', () => {
-        // Detectar o cargar idioma guardado
         const savedLang = localStorage.getItem('app_lang');
         const browserLang = navigator.language ? navigator.language.split('-')[0] : 'es';
         currentLang = savedLang || (i18n[browserLang] ? browserLang : 'es');
@@ -613,7 +697,6 @@
 
         applyLanguage();
 
-        // Eventos de botones e inputs
         document.getElementById('btn-add-initial').addEventListener('click', addInitialPlayer);
         document.getElementById('player-name-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') addInitialPlayer(); });
         document.getElementById('btn-start-game').addEventListener('click', startGame);
@@ -629,7 +712,8 @@
         document.getElementById('app-title').innerText = t.appTitle;
         document.getElementById('setup-title').innerText = t.setupTitle;
         document.getElementById('lbl-limit').innerText = t.lblLimit;
-        document.getElementById('limit-input').placeholder = t.limitPlaceholder;
+        document.getElementById('lbl-max-reentries').innerText = t.lblMaxReentries;
+        document.getElementById('max-reentries-input').placeholder = t.unlimitedHelper;
         document.getElementById('lbl-add-players').innerText = t.lblAddPlayers;
         document.getElementById('player-name-input').placeholder = t.inputNamePlaceholder;
         document.getElementById('btn-add-initial').innerText = t.btnAdd;
@@ -644,11 +728,18 @@
         document.getElementById('btn-clean-eliminated').innerText = t.btnClean;
         document.getElementById('btn-reset').innerText = t.btnReset;
 
-        if (document.getElementById('game-screen').classList.contains('hidden') === false) {
-            document.getElementById('limit-display').innerText = limit > 0 
-                ? t.limitBanner.replace('{limit}', limit) 
-                : t.noLimitBanner;
+        if (!document.getElementById('game-screen').classList.contains('hidden')) {
+            updateBanner();
         }
+    }
+
+    function updateBanner() {
+        const t = i18n[currentLang];
+        const reentriesTxt = maxReentries > 0 ? maxReentries : t.unlimited;
+        const bannerTemplate = limit > 0 ? t.limitBanner : t.noLimitBanner;
+        document.getElementById('limit-display').innerText = bannerTemplate
+            .replace('{limit}', limit)
+            .replace('{reentries}', reentriesTxt);
     }
 
     function addInitialPlayer() {
@@ -657,7 +748,7 @@
         const name = input.value.trim();
         
         if (name !== "") {
-            players.push({ name: name, score: 0 });
+            players.push({ name: name, score: 0, reentries: 0 });
             input.value = '';
             msg.className = 'msg-box';
             msg.innerText = '';
@@ -679,7 +770,7 @@
         list.innerHTML = players.map((p, i) => `
             <li>
                 <span>👤 ${p.name}</span>
-                <button type="button" class="danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="removeInitialPlayer(${i})">✕</button>
+                <button type="button" class="danger" style="padding: 3px 7px; font-size: 0.75rem;" onclick="removeInitialPlayer(${i})">✕</button>
             </li>
         `).join('');
     }
@@ -687,6 +778,7 @@
     function startGame() {
         const msg = document.getElementById('setup-msg');
         limit = parseInt(document.getElementById('limit-input').value) || 0;
+        maxReentries = parseInt(document.getElementById('max-reentries-input').value) || 0;
         
         if (players.length === 0) {
             msg.innerText = i18n[currentLang].errNoPlayers;
@@ -696,10 +788,7 @@
         
         document.getElementById('setup-screen').classList.add('hidden');
         document.getElementById('game-screen').classList.remove('hidden');
-        const t = i18n[currentLang];
-        document.getElementById('limit-display').innerText = limit > 0 
-            ? t.limitBanner.replace('{limit}', limit) 
-            : t.noLimitBanner;
+        updateBanner();
         renderBoard();
     }
 
@@ -729,8 +818,16 @@
         const playerIndex = select.value;
         if (playerIndex === "") return;
 
+        const p = players[playerIndex];
+        
+        if (maxReentries > 0 && p.reentries >= maxReentries) {
+            alert(i18n[currentLang].reentryExceeded);
+            return;
+        }
+
         const targetScore = getHighestActiveScore();
-        players[playerIndex].score = targetScore;
+        p.score = targetScore;
+        p.reentries += 1;
         renderBoard();
     }
 
@@ -740,7 +837,7 @@
         if (!name) return;
 
         const targetScore = getHighestActiveScore();
-        players.push({ name: name, score: targetScore });
+        players.push({ name: name, score: targetScore, reentries: 0 });
         nameInput.value = '';
         renderBoard();
     }
@@ -769,22 +866,34 @@
             const isLeader = !isEliminated && minActiveScore !== null && p.score === minActiveScore && activePlayers.length > 1;
             const initialLetter = p.name.charAt(0).toUpperCase();
 
+            let reentryBadge = '';
+            if (p.reentries > 0) {
+                const limitTxt = maxReentries > 0 ? `/${maxReentries}` : '';
+                reentryBadge = `<span class="reentry-pill">🔄 ${p.reentries}${limitTxt}</span>`;
+            }
+
             return `
-                <div class="player-box ${isEliminated ? 'eliminated' : ''} ${isLeader ? 'leader' : ''}">
-                    ${isLeader ? `<span class="leader-badge">${t.leaderBadge}</span>` : ''}
-                    
-                    <div class="player-left">
-                        <button class="delete-player-btn" title="✕" onclick="deletePlayer(${i})">✕</button>
-                        <div class="player-avatar">${initialLetter}</div>
-                        <div class="player-info">
-                            <div class="player-name">${p.name}</div>
-                            <div class="player-score-badge">${p.score} <span style="font-size:0.7rem; font-weight:700;">${t.pts}</span></div>
-                        </div>
+                <div class="player-card ${isEliminated ? 'eliminated' : ''} ${isLeader ? 'leader' : ''}">
+                    <div class="badge-container">
+                        ${isLeader ? `<span class="leader-badge">${t.leaderBadge}</span>` : ''}
+                        ${isEliminated ? `<span class="elim-badge">${t.elimBadge}</span>` : ''}
                     </div>
 
-                    <div class="score-input-container">
-                        <input type="number" id="add-input-${i}" placeholder="+/-" onkeydown="if(event.key==='Enter') addPoints(${i})">
-                        <button type="button" onclick="addPoints(${i})">${t.btnSum}</button>
+                    <div class="player-header-row">
+                        <div class="player-identity">
+                            <button class="delete-player-btn" title="✕" onclick="deletePlayer(${i})">✕</button>
+                            <div class="player-avatar">${initialLetter}</div>
+                            <div class="player-name-wrapper">
+                                <div class="player-name">${p.name}</div>
+                                ${reentryBadge}
+                            </div>
+                        </div>
+                        <div class="player-score-badge">${p.score} <span style="font-size:0.75rem; font-weight:700;">${t.pts}</span></div>
+                    </div>
+
+                    <div class="player-actions-row">
+                        <input type="number" id="add-input-${i}" class="score-input-large" placeholder="+/- pts" onkeydown="if(event.key==='Enter') addPoints(${i})">
+                        <button type="button" class="btn-add-pts" onclick="addPoints(${i})">${t.btnSum}</button>
                     </div>
                 </div>
             `;
@@ -793,9 +902,15 @@
         selectEliminated.innerHTML = `<option value="">${t.optSelectDefault}</option>`;
         players.forEach((p, i) => {
             if (limit > 0 && p.score >= limit) {
+                const canReenter = maxReentries === 0 || p.reentries < maxReentries;
+                const statusTxt = canReenter 
+                    ? `(${p.score} pts - Reeng: ${p.reentries}${maxReentries > 0 ? '/' + maxReentries : ''})` 
+                    : `(${p.score} pts - AGOTADOS)`;
+                
                 const opt = document.createElement('option');
                 opt.value = i;
-                opt.textContent = `${p.name} (${p.score} ${t.pts})`;
+                opt.textContent = `${p.name} ${statusTxt}`;
+                if (!canReenter) opt.disabled = true;
                 selectEliminated.appendChild(opt);
             }
         });
